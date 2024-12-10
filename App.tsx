@@ -80,10 +80,10 @@ function App(): React.JSX.Element {
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
             screen and then come back to see your edits.
           </Section>
-          <Section title="See Your Changes">
+          <Section title="테스트">
             <ReloadInstructions />
           </Section>
-          <Section title="Debug">
+          <Section title="디버그">
             <DebugInstructions />
           </Section>
           <Section title="Learn More">
