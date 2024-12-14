@@ -9,7 +9,7 @@ const YourApp = () => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Text style={{ fontSize: 40 }}>뭘 더 넣어야 할까 🎉</Text>
+      <Text style={{ fontSize: 40 }}>뭘 더 넣어야 할까🎉</Text>
     </View>
   );
 };
