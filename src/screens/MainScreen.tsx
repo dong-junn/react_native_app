@@ -1,25 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, StyleSheet, RefreshControl, Alert, TouchableOpacity } from 'react-native';
-import { Card, Text, Image, Badge, Icon } from '@rneui/themed';
-import { fetchPosts } from '../api/api';
+import { Card, Text, Image, Badge } from '@rneui/themed';
+import { Post, fetchPosts } from '../api/api';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const MainScreen = () => {
-  const [posts, setPosts] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
-  const [loading, setLoading] = useState(true);
+const MainScreen: React.FC = () => {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const loadPosts = async () => {
     try {
       setLoading(true);
       const response = await fetchPosts();
-      console.log('받은 응답:', response);
-      if (response) {
-        setPosts(response);
+      console.log('서버 응답:', response);
+      
+      // response.content에서 게시물 배열 추출
+      if (response && Array.isArray(response.content)) {
+        setPosts(response.content);
+      } else {
+        setPosts([]);
+        console.error('유효하지 않은 응답 형식:', response);
       }
     } catch (error) {
       console.error('게시물 로딩 실패:', error);
       Alert.alert('오류', '게시물을 불러오는데 실패했습니다.');
+      setPosts([]);
     } finally {
       setLoading(false);
     }
@@ -35,7 +41,7 @@ const MainScreen = () => {
     loadPosts();
   }, []);
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
   };
@@ -49,7 +55,7 @@ const MainScreen = () => {
     >
       {loading ? (
         <View style={styles.centerContainer}>
-          <Text>로�� 중...</Text>
+          <Text>로딩 중...</Text>
         </View>
       ) : posts.length === 0 ? (
         <View style={styles.centerContainer}>
