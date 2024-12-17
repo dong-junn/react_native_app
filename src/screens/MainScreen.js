@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, StyleSheet, RefreshControl, Alert } from 'react-native';
-import { Card, Text, Image, Icon } from '@rneui/themed';
+import { ScrollView, View, StyleSheet, RefreshControl, Alert, TouchableOpacity } from 'react-native';
+import { Card, Text, Image, Badge, Icon } from '@rneui/themed';
 import { fetchPosts } from '../api/api';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const MainScreen = () => {
   const [posts, setPosts] = useState([]);
@@ -48,7 +49,7 @@ const MainScreen = () => {
     >
       {loading ? (
         <View style={styles.centerContainer}>
-          <Text>로딩 중...</Text>
+          <Text>로�� 중...</Text>
         </View>
       ) : posts.length === 0 ? (
         <View style={styles.centerContainer}>
@@ -80,18 +81,31 @@ const MainScreen = () => {
 
             <View style={styles.footer}>
               <View style={styles.interactions}>
-                <View style={styles.interactionItem}>
-                  <Icon 
-                    name={post.liked ? "heart" : "heart-outline"} 
-                    type="material-community"
-                    color={post.liked ? "#FF0000" : "#000"}
-                    size={24}
+                <TouchableOpacity style={styles.interactionItem}>
+                  <FontAwesome
+                    name="heart-o"
+                    size={20}
+                    color="#666"
                   />
-                  <Text style={styles.interactionText}>{post.likeCount}</Text>
-                </View>
+                  <Badge
+                    value={post.likeCount}
+                    status="error"
+                    containerStyle={styles.badgeContainer}
+                    textStyle={styles.badgeText}
+                  />
+                </TouchableOpacity>
                 <View style={styles.interactionItem}>
-                  <Icon name="eye-outline" type="material-community" size={24} />
-                  <Text style={styles.interactionText}>{post.viewCount}</Text>
+                  <FontAwesome 
+                    name="eye"
+                    size={20}
+                    color="#666"
+                  />
+                  <Badge
+                    value={post.viewCount}
+                    status="primary"
+                    containerStyle={styles.badgeContainer}
+                    textStyle={styles.badgeText}
+                  />
                 </View>
               </View>
               <Text style={styles.username}>{post.username}</Text>
@@ -166,15 +180,19 @@ const styles = StyleSheet.create({
   },
   interactions: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   interactionItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 20,
+    marginRight: 16,
   },
-  interactionText: {
-    marginLeft: 5,
-    fontSize: 14,
+  badgeContainer: {
+    marginLeft: 4,
+  },
+  badgeText: {
+    fontSize: 12,
+    fontWeight: '600',
   },
   username: {
     fontSize: 14,
