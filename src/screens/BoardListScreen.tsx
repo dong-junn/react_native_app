@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, StyleSheet, RefreshControl, Alert, TouchableOpacity } from 'react-native';
 import { Card, Text, Image, Badge } from '@rneui/themed';
-import { Post, fetchPosts } from '../api/MainScreenAPI';
+import { Post } from '../api/MainScreenAPI';
+import { fetchBoardList } from '../api/BoardListAPI';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useTheme } from '../context/ThemeContext';
 
@@ -9,16 +10,16 @@ interface PostResponse {
   content: Post[];
 }
 
-const MainScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+const BoardListScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+  const { isDarkMode } = useTheme();
   const [posts, setPosts] = useState<Post[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const { isDarkMode } = useTheme();
 
   const loadPosts = async () => {
     try {
       setLoading(true);
-      const response = await fetchPosts();
+      const response = await fetchBoardList();
       console.log('서버 응답:', response);
       
       if (Array.isArray(response)) {
@@ -56,7 +57,7 @@ const MainScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#f5f5f5',
+      backgroundColor: isDarkMode ? '#121212' : '#f5f5f5',
     },
     centerContainer: {
       flex: 1,
@@ -69,7 +70,7 @@ const MainScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       borderRadius: 15,
       padding: 15,
       marginBottom: 10,
-      backgroundColor: '#FFFFFF',
+      backgroundColor: isDarkMode ? '#1E1E1E' : '#FFFFFF',
       elevation: 3,
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 },
@@ -89,7 +90,7 @@ const MainScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     },
     date: {
       fontSize: 14,
-      color: '#666666',
+      color: isDarkMode ? '#888888' : '#666666',
     },
     image: {
       width: '100%',
@@ -101,14 +102,14 @@ const MainScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       fontSize: 18,
       fontWeight: 'bold',
       marginBottom: 8,
-      color: '#000000',
+      color: isDarkMode ? '#FFFFFF' : '#000000',
     },
     contentPreview: {
       marginBottom: 10,
     },
     content: {
       fontSize: 14,
-      color: '#444444',
+      color: isDarkMode ? '#CCCCCC' : '#444444',
     },
     footer: {
       flexDirection: 'row',
@@ -134,7 +135,7 @@ const MainScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     },
     username: {
       fontSize: 14,
-      color: '#666666',
+      color: isDarkMode ? '#888888' : '#666666',
     },
   });
 
@@ -207,4 +208,4 @@ const MainScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   );
 };
 
-export default MainScreen;
+export default BoardListScreen; 

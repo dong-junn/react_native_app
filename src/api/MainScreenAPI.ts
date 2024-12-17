@@ -21,7 +21,7 @@ export interface Post {
 
 export const fetchPosts = async (): Promise<Post[]> => {
   try {
-    const response = await fetch(`${BASE_URL}/post`, {
+    const response = await fetch(`${BASE_URL}`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
